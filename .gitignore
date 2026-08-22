@@ -1,0 +1,17 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# DBeaver
+.dbeaver/
+*.dbeaver-data-sources.xml
+
+# Editor
+.vscode/
+.idea/
+
+# Large/raw source data (isteğe bağlı olarak takip edilebilir, şimdilik hariç)
+datasets/**/*.csv
+
+# Logs
+*.log

@@ -38,8 +38,14 @@ Bu proje benim için **öğrenme amaçlı**. İki farklı yardım modu var, ikis
 Kısacası: **"Yap bunu" isteklerinde ipucu ver, "Bunu neden/nasıl" sorularında öğret.**
 
 ## SQL Server → PostgreSQL Çeviri Notları
-Proje ilerledikçe karşılaştığım önemli farkları buraya ekleyeceğiz (örn. `IDENTITY` → `GENERATED ALWAYS AS IDENTITY`,
-`GETDATE()` → `NOW()`, `NVARCHAR` → `VARCHAR`/`TEXT`, T-SQL `MERGE` farkları, vb.)
+Proje ilerledikçe karşılaştığım önemli farkları buraya ekleyeceğiz.
+
+| SQL Server | PostgreSQL | Not |
+|---|---|---|
+| `NVARCHAR(n)` | `VARCHAR(n)` | `docs/data_catalog.md` içinde uygulandı (Baraa'nın dosyasından uyarlanırken). |
+| `IDENTITY` | `GENERATED ALWAYS AS IDENTITY` | Henüz uygulanmadı — Bronze layer script'lerinde ele alınacak. |
+| `GETDATE()` | `NOW()` | Henüz uygulanmadı. |
+| T-SQL `MERGE` | `INSERT ... ON CONFLICT` | Henüz uygulanmadı — upsert mantığı gerektiğinde ele alınacak. |
 
 ## Mevcut Durum
 - [ ] Requirements Analysis

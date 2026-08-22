@@ -44,7 +44,7 @@ Proje ilerledikçe karşılaştığım önemli farkları buraya ekleyeceğiz.
 |---|---|---|
 | `NVARCHAR(n)` | `VARCHAR(n)` | `docs/data_catalog.md` içinde uygulandı (Baraa'nın dosyasından uyarlanırken). |
 | `IDENTITY` | `GENERATED ALWAYS AS IDENTITY` | Henüz uygulanmadı — Bronze layer script'lerinde ele alınacak. |
-| `GETDATE()` | `NOW()` | Henüz uygulanmadı. |
+| `GETDATE()` | `clock_timestamp()` (`NOW()` değil!) | `proc_load_bronze.sql`'de süre ölçümü (start/end_time) için uygulandı. `NOW()` transaction başlangıç anını döndürür ve aynı transaction içinde hep aynı değeri verir — süre farkı hep 0 çıkar. `clock_timestamp()` her çağrıda gerçek anlık saati verir, süre ölçümü için doğru olan bu. |
 | T-SQL `MERGE` | `INSERT ... ON CONFLICT` | Henüz uygulanmadı — upsert mantığı gerektiğinde ele alınacak. |
 
 ## Mevcut Durum

@@ -10,6 +10,10 @@ Thumbs.db
 .vscode/
 .idea/
 
+# draw.io / diagrams.net backup files
+.$*.bkp
+*.bkp
+
 # Large/raw source data (isteğe bağlı olarak takip edilebilir, şimdilik hariç)
 datasets/**/*.csv
 

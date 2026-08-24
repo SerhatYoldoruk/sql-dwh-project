@@ -34,8 +34,20 @@ Bu proje benim için **öğrenme amaçlı**. İki farklı yardım modu var, ikis
    ipucu modunda cevaplama — tam ve açık açıklama yap. Örnek: "neden CTE yerine subquery
    kullanmadık", "bu index neden bu şekilde çalışıyor", "medallion mimarisi neden 3 katmanlı" gibi
    sorularda doğrudan ve eksiksiz açıkla.
+3. **"Doğrusu/best-practice ne" tarzı tasarım sorularında**: Bunlar "bul bakalım" soruları değil —
+   bir şeyi nereye/ne zaman/neden eklemem gerektiğini soruyorsam (örn. "TRUNCATE'i nereye eklemeliyim"),
+   soru sorarak beni yönlendirme, direkt cevabı + gerekçesini (hangi aşamada, neden) söyle. Bunu
+   "bul bakalım" moduyla karıştırma — ben zaten kendi yazdığım koddaki somut bir hatayı bulmaya
+   çalışmıyorum, senin tecrübene dayanan bir tavsiye istiyorum.
 
-Kısacası: **"Yap bunu" isteklerinde ipucu ver, "Bunu neden/nasıl" sorularında öğret.**
+Kısacası: **"Yap bunu" isteklerinde ipucu ver, "Bunu neden/nasıl" ve "doğrusu ne" sorularında öğret/tavsiye ver.**
+
+## Kod Stili — SQL Yorum Satırları
+`INSERT`/`SELECT` içindeki dönüşümlerde (`CASE WHEN`, `TRIM`, `SUBSTRING` vb.) Baraa'nın stiline uygun
+**kısa, tek satırlık açıklayıcı yorumlar** kullanıyoruz — ifadenin sonuna (`END AS kolon -- açıklama` gibi),
+ne yaptığını özetleyen bir cümle. Örnek: `-- Remove 'NAS' prefix if present`, `-- Normalize gender codes`,
+`-- Recalculate sales if original value is missing or incorrect`. Uzun/çok satırlı yorum blokları değil,
+tek satırlık özetler.
 
 ## SQL Server → PostgreSQL Çeviri Notları
 Proje ilerledikçe karşılaştığım önemli farkları buraya ekleyeceğiz.
@@ -50,9 +62,9 @@ Proje ilerledikçe karşılaştığım önemli farkları buraya ekleyeceğiz.
 ## Mevcut Durum
 - [ ] Requirements Analysis
 - [ ] Design Data Architecture
-- [ ] Project Initialization
-- [ ] Bronze Layer
-- [ ] Silver Layer
+- [x] Project Initialization
+- [x] Bronze Layer
+- [x] Silver Layer
 - [ ] Gold Layer
 
 (Bu listeyi ilerledikçe güncelleyeceğiz — Notion'daki Epic/Task yapısıyla senkron tutulacak.)

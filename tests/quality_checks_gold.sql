@@ -55,6 +55,19 @@ GROUP BY product_number
 HAVING COUNT(*) > 1;
 
 -- ====================================================================
+-- gold.dim_date
+-- ====================================================================
+
+-- Check that each calendar day appears exactly once (unique grain).
+-- Expectation: no results
+SELECT
+	date_key,
+	COUNT(*)
+FROM gold.dim_date
+GROUP BY date_key
+HAVING COUNT(*) > 1;
+
+-- ====================================================================
 -- gold.fact_sales
 -- ====================================================================
 
@@ -67,3 +80,16 @@ SELECT
 FROM gold.fact_sales
 WHERE customer_key IS NULL
 	OR product_key IS NULL;
+
+-- Check that every non-null date key resolves to a row in dim_date
+-- (i.e. dim_date's range covers all fact dates). NULL keys are allowed:
+-- they represent missing/invalid source dates cleaned in the silver layer.
+-- Expectation: no results
+SELECT
+	f.order_date_key,
+	f.shipping_date_key,
+	f.due_date_key
+FROM gold.fact_sales f
+WHERE (f.order_date_key    IS NOT NULL AND NOT EXISTS (SELECT 1 FROM gold.dim_date d WHERE d.date_key = f.order_date_key))
+	OR (f.shipping_date_key IS NOT NULL AND NOT EXISTS (SELECT 1 FROM gold.dim_date d WHERE d.date_key = f.shipping_date_key))
+	OR (f.due_date_key      IS NOT NULL AND NOT EXISTS (SELECT 1 FROM gold.dim_date d WHERE d.date_key = f.due_date_key));

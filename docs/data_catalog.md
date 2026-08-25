@@ -44,18 +44,38 @@ The Gold Layer is the business-level data representation, structured to support 
 
 ---
 
-### 3. **gold.fact_sales**
+### 3. **gold.dim_date**
+- **Purpose:** Calendar date dimension enabling time-based analysis (year, quarter, month, weekday, weekend). Generated for the full range of dates covered by fact_sales (2010-01-01 to 2014-12-31). Acts as a role-playing dimension: fact_sales joins to it once per date role (order, shipping, due).
+- **Columns:**
+
+| Column Name  | Data Type    | Description                                                                          |
+|--------------|--------------|--------------------------------------------------------------------------------------|
+| date_key     | INT          | Surrogate key in YYYYMMDD form (e.g., 20130115); joined from fact_sales date keys.   |
+| full_date    | DATE         | The actual calendar date (e.g., 2013-01-15).                                          |
+| year         | INT          | The calendar year (e.g., 2013).                                                       |
+| quarter      | INT          | The calendar quarter, 1 to 4.                                                         |
+| month        | INT          | The month number, 1 to 12.                                                            |
+| month_name   | TEXT         | The full month name (e.g., 'January').                                                |
+| day          | INT          | The day of the month, 1 to 31.                                                        |
+| day_of_week  | INT          | ISO day of week, 1 (Monday) to 7 (Sunday).                                            |
+| day_name     | TEXT         | The full weekday name (e.g., 'Monday').                                               |
+| week_of_year | INT          | The ISO week number of the year.                                                     |
+| is_weekend   | BOOLEAN      | TRUE if the date falls on Saturday or Sunday, otherwise FALSE.                        |
+
+---
+
+### 4. **gold.fact_sales**
 - **Purpose:** Stores transactional sales data for analytical purposes. Grain: one row per product line item within an order.
 - **Columns:**
 
-| Column Name   | Data Type    | Description                                                                                 |
-|---------------|--------------|---------------------------------------------------------------------------------------------|
-| order_number  | VARCHAR(50)  | A unique alphanumeric identifier for each sales order (e.g., 'SO54496').                     |
-| product_key   | INT          | Surrogate key linking the order line to the product dimension (gold.dim_products).          |
-| customer_key  | INT          | Surrogate key linking the order line to the customer dimension (gold.dim_customers).        |
-| order_date    | DATE         | The date when the order was placed.                                                         |
-| shipping_date | DATE         | The date when the order was shipped to the customer.                                        |
-| due_date      | DATE         | The date when the order payment was due.                                                    |
-| sales_amount  | INT          | The total monetary value of the sale for the line item, in whole currency units (e.g., 25). |
-| quantity      | INT          | The number of units of the product ordered for the line item (e.g., 1).                     |
-| price         | INT          | The price per unit of the product for the line item, in whole currency units (e.g., 25).    |
+| Column Name       | Data Type    | Description                                                                                 |
+|-------------------|--------------|---------------------------------------------------------------------------------------------|
+| order_number      | VARCHAR(50)  | A unique alphanumeric identifier for each sales order (e.g., 'SO54496').                     |
+| product_key       | INT          | Surrogate key linking the order line to the product dimension (gold.dim_products).          |
+| customer_key      | INT          | Surrogate key linking the order line to the customer dimension (gold.dim_customers).        |
+| order_date_key    | INT          | Surrogate date key (YYYYMMDD) for when the order was placed; joins to gold.dim_date.        |
+| shipping_date_key | INT          | Surrogate date key (YYYYMMDD) for when the order was shipped; joins to gold.dim_date.       |
+| due_date_key      | INT          | Surrogate date key (YYYYMMDD) for when the order payment was due; joins to gold.dim_date.   |
+| sales_amount      | INT          | The total monetary value of the sale for the line item, in whole currency units (e.g., 25). |
+| quantity          | INT          | The number of units of the product ordered for the line item (e.g., 1).                     |
+| price             | INT          | The price per unit of the product for the line item, in whole currency units (e.g., 25).    |

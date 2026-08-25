@@ -93,3 +93,16 @@ FROM gold.fact_sales f
 WHERE (f.order_date_key    IS NOT NULL AND NOT EXISTS (SELECT 1 FROM gold.dim_date d WHERE d.date_key = f.order_date_key))
 	OR (f.shipping_date_key IS NOT NULL AND NOT EXISTS (SELECT 1 FROM gold.dim_date d WHERE d.date_key = f.shipping_date_key))
 	OR (f.due_date_key      IS NOT NULL AND NOT EXISTS (SELECT 1 FROM gold.dim_date d WHERE d.date_key = f.due_date_key));
+
+-- ====================================================================
+-- gold.report_customers
+-- ====================================================================
+
+-- Check that each customer appears only once (report grain: one per customer).
+-- Expectation: no results
+SELECT
+	customer_key,
+	COUNT(*)
+FROM gold.report_customers
+GROUP BY customer_key
+HAVING COUNT(*) > 1;

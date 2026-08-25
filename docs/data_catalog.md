@@ -79,3 +79,55 @@ The Gold Layer is the business-level data representation, structured to support 
 | sales_amount      | INT          | The total monetary value of the sale for the line item, in whole currency units (e.g., 25). |
 | quantity          | INT          | The number of units of the product ordered for the line item (e.g., 1).                     |
 | price             | INT          | The price per unit of the product for the line item, in whole currency units (e.g., 25).    |
+
+---
+
+### 5. **gold.report_customers**
+- **Purpose:** Customer-level report mart. Grain: one row per customer. Consolidates identity with aggregated behavior, KPIs, and segments.
+- **Columns:**
+
+| Column Name      | Data Type    | Description                                                                  |
+|------------------|--------------|------------------------------------------------------------------------------|
+| customer_key     | INT          | Surrogate key of the customer (from gold.dim_customers).                      |
+| customer_number  | VARCHAR(50)  | Business identifier of the customer.                                         |
+| first_name       | VARCHAR(50)  | Customer's first name.                                                       |
+| last_name        | VARCHAR(50)  | Customer's last name.                                                        |
+| birthdate        | DATE         | Customer's date of birth.                                                    |
+| total_orders     | INT          | Number of distinct orders placed by the customer.                            |
+| total_sales      | INT          | Total monetary value of all the customer's purchases.                        |
+| total_quantity   | INT          | Total number of items purchased by the customer.                             |
+| total_products   | INT          | Number of distinct products the customer has bought.                         |
+| first_order      | DATE         | Date of the customer's first order.                                          |
+| last_order       | DATE         | Date of the customer's most recent order.                                    |
+| age              | INT          | Customer's current age in years, derived from birthdate.                     |
+| lifespan         | INT          | Months between the customer's first and last order.                          |
+| recency          | INT          | Months since the customer's last order (relative to the current date).       |
+| age_group        | TEXT         | Age bucket (e.g., 'Under 20', '20-29', '50 and above').                       |
+| customer_segment | TEXT         | Value segment: 'VIP', 'Regular', or 'New'.                                    |
+
+---
+
+### 6. **gold.report_products**
+- **Purpose:** Product-level report mart. Grain: one row per product. Consolidates identity with aggregated sales behavior, KPIs, and segments.
+- **Columns:**
+
+| Column Name         | Data Type    | Description                                                                |
+|---------------------|--------------|----------------------------------------------------------------------------|
+| product_key         | INT          | Surrogate key of the product (from gold.dim_products).                     |
+| product_number      | VARCHAR(50)  | Business identifier of the product.                                        |
+| product_name        | VARCHAR(50)  | Descriptive name of the product.                                           |
+| category            | VARCHAR(50)  | High-level product classification.                                        |
+| subcategory         | VARCHAR(50)  | Detailed product classification within the category.                      |
+| product_cost        | INT          | Base cost of the product.                                                 |
+| maintenance         | VARCHAR(50)  | Whether the product requires maintenance ('Yes'/'No').                    |
+| product_line        | VARCHAR(50)  | Product line or series the product belongs to.                            |
+| total_orders        | INT          | Number of distinct orders that included the product.                      |
+| total_sales         | INT          | Total monetary value of all sales of the product.                         |
+| total_quantity      | INT          | Total number of units sold.                                               |
+| total_customers     | INT          | Number of distinct customers who bought the product.                      |
+| first_sale          | DATE         | Date of the product's first sale.                                         |
+| last_sale           | DATE         | Date of the product's most recent sale.                                   |
+| lifespan            | INT          | Months between the product's first and last sale.                         |
+| product_segment     | TEXT         | Performance tier: 'High-Performer', 'Mid-Range', or 'Low-Performer'.       |
+| avg_order_revenue   | INT          | Average revenue per order (total_sales / total_orders).                   |
+| avg_monthly_revenue | NUMERIC      | Average revenue per active month (total_sales / lifespan; NULL if lifespan is 0). |

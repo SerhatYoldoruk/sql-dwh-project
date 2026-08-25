@@ -106,3 +106,16 @@ SELECT
 FROM gold.report_customers
 GROUP BY customer_key
 HAVING COUNT(*) > 1;
+
+-- ====================================================================
+-- gold.report_products
+-- ====================================================================
+
+-- Check that each product appears only once (report grain: one per product).
+-- Expectation: no results
+SELECT
+	product_key,
+	COUNT(*)
+FROM gold.report_products
+GROUP BY product_key
+HAVING COUNT(*) > 1;
